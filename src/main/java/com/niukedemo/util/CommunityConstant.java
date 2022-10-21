@@ -1,0 +1,43 @@
+package com.niukedemo.util;
+
+/**
+ * @author 刘欢
+ * @date 2022年10月09日 22:35
+ */
+
+public interface CommunityConstant {
+    /**
+     * @Description:邮件激活成功
+     */
+    int ACTIVATION_SUCCESS = 0;
+    /**
+     * @Description:邮件重复激活
+     */
+    int ACTIVATION_REPEAT = 1;
+    /**
+     * @Description:邮件激活失败
+     */
+    int ACTIVATION_FAILURE = 2;
+    /**
+     * @Description:默认状态的登录凭证的超时时间,12小时
+     */
+    int DEFAULT_EXPIRED_SECONDS = 3600 * 12;
+    /**
+     * @Description:记住状态的登录凭证的超时时间,一百天
+     */
+    int REMEMBER_EXPIRED_SECONDS = 3600 * 24 * 100;
+    /**
+     * @Description: 实体类型：帖子
+     * @Param:
+     * @return:
+     * @Author: 刘欢
+     */
+    int ENTITY_TYPE_POST = 1;
+    /**
+     * @Description:实体类型：评论
+     * @Param:
+     * @return:
+     * @Author: 刘欢
+     */
+    int ENTITY_TYPE_COMMENT = 1;
+}
