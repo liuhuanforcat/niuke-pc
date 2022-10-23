@@ -25,10 +25,14 @@ spring:
     port: 587
     username: 1057016137@qq.com
     password: tqrqnfcepldnbbgf
+  redis:
+    database: 0
+    host: 192.168.241.132
+    port: 6379
 
 logging:
   level:
-    root: error
+    root: info
 community:
   path:
     domain: http://localhost:8080
