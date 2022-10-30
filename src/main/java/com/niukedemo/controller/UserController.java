@@ -2,6 +2,7 @@ package com.niukedemo.controller;
 
 import com.niukedemo.annotation.LoginRequired;
 import com.niukedemo.entity.User;
+import com.niukedemo.service.LikeService;
 import com.niukedemo.service.UserService;
 import com.niukedemo.util.CommunityUtil;
 import com.niukedemo.util.HostHolder;
@@ -38,6 +39,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private HostHolder hostHolder;
+    @Autowired
+    private LikeService likeService;
 
     /**
      * @Description: 访问setting.html
@@ -111,4 +114,17 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/profile/{userId}", method = RequestMethod.GET)
+    public String getProfilePage(@PathVariable("userId") int userId, Model model) {
+        User user = userService.findUserById(userId);
+        if (user == null) {
+            throw new RuntimeException("该用户不存在！");
+        }
+        //存储用户
+        model.addAttribute("user", user);
+        //存储点赞数量
+        int likeCount = likeService.findUserLikeCount(userId);
+        model.addAttribute("likeCount", likeCount);
+        return "/site/profile";
+    }
 }

@@ -6,10 +6,12 @@ import com.niukedemo.entity.Page;
 import com.niukedemo.entity.User;
 import com.niukedemo.service.CommentService;
 import com.niukedemo.service.DiscussPostService;
+import com.niukedemo.service.LikeService;
 import com.niukedemo.service.UserService;
 import com.niukedemo.util.CommunityConstant;
 import com.niukedemo.util.CommunityUtil;
 import com.niukedemo.util.HostHolder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,7 @@ import java.util.*;
  * @author 刘欢
  * @date 2022年10月15日 15:16
  */
+@Slf4j
 @Controller
 @RequestMapping("/discuss")
 public class DiscussPostController implements CommunityConstant {
@@ -35,6 +38,8 @@ public class DiscussPostController implements CommunityConstant {
     private HostHolder hostHolder;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private LikeService likeService;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
@@ -61,6 +66,13 @@ public class DiscussPostController implements CommunityConstant {
         //作者
         User user = userService.findUserById(post.getUserId());
         model.addAttribute("user", user);
+        //点赞数量
+        long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST, discussPostId);
+        model.addAttribute("likeCount", likeCount);
+        //点赞状态
+        int likeStatus =
+                hostHolder.getUsers() == null ? 0 : likeService.findEntityLikeStatus(hostHolder.getUsers().getId(), ENTITY_TYPE_POST, discussPostId);
+        model.addAttribute("likeStatus", likeStatus);
         //评论分页信息
         page.setLimit(5);
         page.setPath("/discuss/detail/" + discussPostId);
@@ -80,6 +92,14 @@ public class DiscussPostController implements CommunityConstant {
                 commentVo.put("comment", comment);
                 //作者
                 commentVo.put("user", userService.findUserById(comment.getUserId()));
+
+                //点赞数量
+                likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_COMMENT, comment.getId());
+                commentVo.put("likeCount", likeCount);
+                //点赞状态
+                likeStatus =
+                        hostHolder.getUsers() == null ? 0 : likeService.findEntityLikeStatus(hostHolder.getUsers().getId(), ENTITY_TYPE_COMMENT, comment.getId());
+                commentVo.put("likeStatus", likeStatus);
                 //回复列表
                 List<Comment> replyList =
                         commentService.findCommentsByEntity(ENTITY_TYPE_POST, comment.getId(), 0, Integer.MAX_VALUE);
@@ -94,6 +114,18 @@ public class DiscussPostController implements CommunityConstant {
                         replyVo.put("user", userService.findUserById(reply.getUserId()));
                         //回复目标
                         User target = reply.getTargetId() == 0 ? null : userService.findUserById(reply.getTargetId());
+
+                        //点赞数量
+                        likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_COMMENT, reply.getId());
+                        log.warn("点赞数量"+likeCount);
+                        replyVo.put("likeCount", likeCount);
+
+                        //点赞状态
+                        likeStatus =
+                                hostHolder.getUsers() == null ? 0 : likeService.findEntityLikeStatus(hostHolder.getUsers().getId(), ENTITY_TYPE_COMMENT, reply.getId());
+                        log.warn("点赞状态"+likeStatus);
+                        replyVo.put("likeStatus", likeStatus);
+
                         replyVo.put("target", target);
                         replyVoList.add(replyVo);
                     }
@@ -101,11 +133,11 @@ public class DiscussPostController implements CommunityConstant {
                 commentVo.put("replys", replyVoList);
                 //回复数量
                 int replyCount = commentService.findCommentCount(ENTITY_TYPE_COMMENT, comment.getId());
-                commentVo.put("replyCount",replyCount);
+                commentVo.put("replyCount", replyCount);
                 commentVoList.add(commentVo);
             }
         }
-        model.addAttribute("comments",commentVoList);
+        model.addAttribute("comments", commentVoList);
         return "/site/discuss-detail";
     }
 
