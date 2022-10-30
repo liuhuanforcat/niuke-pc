@@ -2,8 +2,10 @@ package com.niukedemo.controller;
 
 import com.niukedemo.annotation.LoginRequired;
 import com.niukedemo.entity.User;
+import com.niukedemo.service.FollowService;
 import com.niukedemo.service.LikeService;
 import com.niukedemo.service.UserService;
+import com.niukedemo.util.CommunityConstant;
 import com.niukedemo.util.CommunityUtil;
 import com.niukedemo.util.HostHolder;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +30,7 @@ import java.io.*;
 @Slf4j
 @Controller
 @RequestMapping("/user")
-public class UserController {
+public class UserController implements CommunityConstant {
     @Value("${community.path.upload}")
     private String uploadPath;
     @Value("${community.path.domain}")
@@ -41,6 +43,8 @@ public class UserController {
     private HostHolder hostHolder;
     @Autowired
     private LikeService likeService;
+    @Autowired
+    private FollowService followService;
 
     /**
      * @Description: 访问setting.html
@@ -125,6 +129,18 @@ public class UserController {
         //存储点赞数量
         int likeCount = likeService.findUserLikeCount(userId);
         model.addAttribute("likeCount", likeCount);
+        //关注数量
+        long followeeCount = followService.findFolloweeCount(userId, ENTITY_TYPE_USER);
+        model.addAttribute("followeeCount", followeeCount);
+        //粉丝数量
+        long followerCount = followService.findFollowerCount(ENTITY_TYPE_USER, userId);
+        model.addAttribute("followerCount", followerCount);
+        //是否已关注
+        boolean hasFollowed = false;
+        if (hostHolder.getUsers() != null) {
+            hasFollowed = followService.hasFollowed(hostHolder.getUsers().getId(), ENTITY_TYPE_USER, userId);
+            model.addAttribute("hasFollowed", hasFollowed);
+        }
         return "/site/profile";
     }
 }

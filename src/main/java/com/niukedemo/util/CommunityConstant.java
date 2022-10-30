@@ -40,4 +40,11 @@ public interface CommunityConstant {
      * @Author: 刘欢
      */
     int ENTITY_TYPE_COMMENT = 1;
+    /**
+     * @Description: 实体类型：用户
+     * @Param:
+     * @return:
+     * @Author: 刘欢
+     */
+    int ENTITY_TYPE_USER = 3;
 }
