@@ -4,6 +4,7 @@ import com.niukedemo.entity.LoginTicket;
 import org.apache.ibatis.annotations.*;
 
 @Mapper
+@Deprecated//过期接口，不推荐使用
 public interface LoginTicketMapper {
     /**
      * @Description:登录成功时，向login_ticket添加一条数据，用来保存登录凭证
