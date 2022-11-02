@@ -31,5 +31,6 @@ public interface CommentMapper {
      * @Author: 刘欢
      */
     int insertComment(Comment comment);
+    Comment selectCommentById(@Param("id")int id);
 
 }

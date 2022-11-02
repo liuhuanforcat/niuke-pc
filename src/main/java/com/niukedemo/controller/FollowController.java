@@ -1,7 +1,9 @@
 package com.niukedemo.controller;
 
+import com.niukedemo.entity.Event;
 import com.niukedemo.entity.Page;
 import com.niukedemo.entity.User;
+import com.niukedemo.event.EventProducer;
 import com.niukedemo.service.FollowService;
 import com.niukedemo.service.UserService;
 import com.niukedemo.util.CommunityConstant;
@@ -15,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 import java.util.Map;
@@ -32,6 +35,9 @@ public class FollowController implements CommunityConstant {
     private HostHolder hostHolder;
     @Autowired
     private UserService userService;
+    @Autowired
+    private EventProducer eventProducer;
+
 
     /**
      * @Description:关注
@@ -40,9 +46,17 @@ public class FollowController implements CommunityConstant {
      * @Author: 刘欢
      */
     @RequestMapping(value = "/follow", method = RequestMethod.POST)
+    @ResponseBody
     public String follow(int entityType, int entityId) {
         User user = hostHolder.getUsers();
         followService.follow(user.getId(), entityType, entityId);
+        Event event = new Event()
+                .setTopic(TOPIC_FOLLOW)
+                .setUserId(hostHolder.getUsers().getId())
+                .setEntityType(entityType)
+                .setEntityId(entityId)
+                .setEntityUserId(entityId);
+        eventProducer.fireEvent(event);
         return CommunityUtil.getJsonString(0, "已关注！");
     }
 

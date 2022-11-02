@@ -47,4 +47,32 @@ public interface CommunityConstant {
      * @Author: 刘欢
      */
     int ENTITY_TYPE_USER = 3;
+    /**
+     * @Description: 评论
+     * @Param:
+     * @return:
+     * @Author: 刘欢
+     */
+    String TOPIC_COMMENT = "comment";
+    /**
+     * @Description: 点赞
+     * @Param:
+     * @return:
+     * @Author: 刘欢
+     */
+    String TOPIC_LIKE = "like";
+    /**
+     * @Description: 关注
+     * @Param:
+     * @return:
+     * @Author: 刘欢
+     */
+    String TOPIC_FOLLOW = "follow";
+    /**
+     * @Description: 系统用户ID
+     * @Param:
+     * @return:
+     * @Author: 刘欢
+     */
+    int SYSTEM_USER_ID = 1;
 }
