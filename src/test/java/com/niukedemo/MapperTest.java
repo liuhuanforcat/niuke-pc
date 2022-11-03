@@ -140,4 +140,9 @@ public class MapperTest {
         int i2 = messageMapper.selectLetterUnreadCount(131,"111_131");
         System.out.println(i2);
     }
+    @Test
+    public void t4(){
+        Message message = messageMapper.selectLatestNotice(1924665361,"comment");
+        System.out.println(message);
+    }
 }
