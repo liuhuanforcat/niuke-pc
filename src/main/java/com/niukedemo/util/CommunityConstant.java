@@ -75,4 +75,11 @@ public interface CommunityConstant {
      * @Author: 刘欢
      */
     int SYSTEM_USER_ID = 1;
+    /**
+     * @Description: 主题发帖
+     * @Param:
+     * @return:
+     * @Author: 刘欢
+     */
+    String TOPIC_PUBLISH = "publish";
 }

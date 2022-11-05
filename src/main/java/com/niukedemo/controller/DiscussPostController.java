@@ -1,9 +1,7 @@
 package com.niukedemo.controller;
 
-import com.niukedemo.entity.Comment;
-import com.niukedemo.entity.DiscussPost;
-import com.niukedemo.entity.Page;
-import com.niukedemo.entity.User;
+import com.niukedemo.entity.*;
+import com.niukedemo.event.EventProducer;
 import com.niukedemo.service.CommentService;
 import com.niukedemo.service.DiscussPostService;
 import com.niukedemo.service.LikeService;
@@ -40,6 +38,8 @@ public class DiscussPostController implements CommunityConstant {
     private CommentService commentService;
     @Autowired
     private LikeService likeService;
+    @Autowired
+    private EventProducer eventProducer;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
@@ -54,6 +54,13 @@ public class DiscussPostController implements CommunityConstant {
         discussPost.setContent(content);
         discussPost.setCreateTime(new Date());
         discussPostService.addDiscussPost(discussPost);
+        //触发发帖事件
+        Event event = new Event()
+                .setTopic(TOPIC_PUBLISH)
+                .setUserId(user.getId())
+                .setEntityType(ENTITY_TYPE_POST)
+                .setEntityId(discussPost.getId());
+        eventProducer.fireEvent(event);
         //报错的情况将来同一处理
         return CommunityUtil.getJsonString(0, "发布成功");
     }
@@ -117,13 +124,13 @@ public class DiscussPostController implements CommunityConstant {
 
                         //点赞数量
                         likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_COMMENT, reply.getId());
-                        log.warn("点赞数量"+likeCount);
+                        log.warn("点赞数量" + likeCount);
                         replyVo.put("likeCount", likeCount);
 
                         //点赞状态
                         likeStatus =
                                 hostHolder.getUsers() == null ? 0 : likeService.findEntityLikeStatus(hostHolder.getUsers().getId(), ENTITY_TYPE_COMMENT, reply.getId());
-                        log.warn("点赞状态"+likeStatus);
+                        log.warn("点赞状态" + likeStatus);
                         replyVo.put("likeStatus", likeStatus);
 
                         replyVo.put("target", target);

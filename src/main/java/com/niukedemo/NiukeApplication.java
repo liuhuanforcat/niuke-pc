@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Slf4j
 @SpringBootApplication
 @EnableTransactionManagement
-public class NiukeApplication {
+public class  NiukeApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(NiukeApplication.class, args);
