@@ -82,4 +82,25 @@ public interface CommunityConstant {
      * @Author: 刘欢
      */
     String TOPIC_PUBLISH = "publish";
+    /**
+     * @Description: 普通用户
+     * @Param:
+     * @return:
+     * @Author: 刘欢
+     */
+    String AUTHORITY_USER = "user";
+    /**
+     * @Description: 管理员
+     * @Param:
+     * @return:
+     * @Author: 刘欢
+     */
+    String AUTHORITY_ADMIN = "admin";
+    /**
+     * @Description: 版主
+     * @Param:
+     * @return:
+     * @Author: 刘欢
+     */
+    String AUTHORITY_MODERATOR = "moderator";
 }
