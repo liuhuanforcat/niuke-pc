@@ -1,5 +1,6 @@
 package com.niukedemo.config;
 
+import com.niukedemo.controller.interceptor.DataInterceptor;
 import com.niukedemo.controller.interceptor.LoginRequiredInterceptor;
 import com.niukedemo.controller.interceptor.LoginTicketInterceptor;
 import com.niukedemo.controller.interceptor.MessageInterceptor;
@@ -20,6 +21,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 //    private LoginRequiredInterceptor loginRequiredInterceptor;
     @Autowired
     private MessageInterceptor messageInterceptor;
+    @Autowired
+    private DataInterceptor dataInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -28,6 +31,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 //        registry.addInterceptor(loginRequiredInterceptor).excludePathPatterns("/**/*.css",
 //                "/**/*.js","/**/*.png","/**/*.jpg","jpeg");
         registry.addInterceptor(messageInterceptor).excludePathPatterns("/**/*.css",
+                "/**/*.js","/**/*.png","/**/*.jpg","jpeg");
+        registry.addInterceptor(dataInterceptor).excludePathPatterns("/**/*.css",
                 "/**/*.js","/**/*.png","/**/*.jpg","jpeg");
     }
 }
