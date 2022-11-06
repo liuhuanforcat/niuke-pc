@@ -69,7 +69,28 @@ public class DiscussPostService {
     public DiscussPost findDiscussPostById(int id) {
         return discussPostMapper.selectDiscussPostById(id);
     }
-    public int updateCommentCount(int id,int commentCount){
+
+    public int updateCommentCount(int id, int commentCount) {
         return discussPostMapper.updateCommentCount(id, commentCount);
+    }
+
+    /**
+     * @Description: 修改类型 ，置顶
+     * @Param: [id, type]
+     * @return: int
+     * @Author: 刘欢
+     */
+    public int updateType(int id, int type) {
+        return discussPostMapper.updateType(id, type);
+    }
+
+    /**
+     * @Description: 修改状态，加精
+     * @Param: [id, status]
+     * @return: int
+     * @Author: 刘欢
+     */
+    public int updateStatus(int id, int status) {
+        return discussPostMapper.updateStatus(id, status);
     }
 }

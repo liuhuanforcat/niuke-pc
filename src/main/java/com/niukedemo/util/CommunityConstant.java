@@ -83,6 +83,13 @@ public interface CommunityConstant {
      */
     String TOPIC_PUBLISH = "publish";
     /**
+     * @Description: 删帖
+     * @Param:
+     * @return:
+     * @Author: 刘欢
+     */
+    String TOPIC_DELETE = "delete";
+    /**
      * @Description: 普通用户
      * @Param:
      * @return:
